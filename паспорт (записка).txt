@@ -1,0 +1,3 @@
+Суть проекта: создание собственного сайта для покупки/продажи книг
+Особенности: использование технологии HTML и работоспособность сайта
+Использованные библиотеки: flask, flask_login, flask_restful, flask_wtf, wtforms, wtforms.validators, sqlalchemy, datetime
