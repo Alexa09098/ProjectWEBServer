@@ -31,8 +31,8 @@ def login():
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
-        return render_template('login.html', message="Wrong login or password", form=form)
-    return render_template('login.html', title='Authorization', form=form)
+        return render_template('login.html', message="Неверный логин или пароль", form=form)
+    return render_template('login.html', title='Авторизация', form=form)
 
 
 @app.route("/")
@@ -41,7 +41,7 @@ def index():
     jobs = db_sess.query(Jobs).all()
     users = db_sess.query(User).all()
     names = {name.id: (name.surname, name.name) for name in users}
-    return render_template("index.html", jobs=jobs, names=names, title='Work log')
+    return render_template("index.html", jobs=jobs, names=names, title='Журнал работ')
 
 
 @app.route('/logout')
@@ -56,12 +56,12 @@ def reqister():
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
-            return render_template('register.html', title='Register', form=form,
-                                   message="Passwords don't match")
+            return render_template('register.html', title='Регистрация', form=form,
+                                   message="Пароли не совпадают")
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.email.data).first():
-            return render_template('register.html', title='Register', form=form,
-                                   message="This user already exists")
+            return render_template('register.html', title='Регистрация', form=form,
+                                   message="Этот пользователь уже существует")
         user = User(
             name=form.name.data,
             surname=form.surname.data,
@@ -93,7 +93,7 @@ def addjob():
         db_sess.add(jobs)
         db_sess.commit()
         return redirect('/')
-    return render_template('addjob.html', title='Adding a job', form=add_form)
+    return render_template('addjob.html', title='Добавить работу', form=add_form)
 
 
 @app.route('/jobs/<int:id>', methods=['GET', 'POST'])
@@ -128,7 +128,7 @@ def job_edit(id):
             return redirect('/')
         else:
             abort(404)
-    return render_template('addjob.html', title='Job Edit', form=form)
+    return render_template('addjob.html', title='Редактировать работу', form=form)
 
 
 @app.route('/job_delete/<int:id>', methods=['GET', 'POST'])
