@@ -2,11 +2,11 @@ from flask import Flask, render_template, redirect, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_restful import abort
 
-from data import db_session
-from data.add_book import AddJobForm
+from data import db_session, books
+from data.add_book import AddBookForm
 from data.login_form import LoginForm
 from data.users import User
-from data.jobs import Jobs
+from data.books import Books
 from data.register import RegisterForm
 
 app = Flask(__name__)
@@ -38,10 +38,10 @@ def login():
 @app.route("/")
 def index():
     db_sess = db_session.create_session()
-    jobs = db_sess.query(Jobs).all()
+    books = db_sess.query(Books).all()
     users = db_sess.query(User).all()
     names = {name.id: (name.surname, name.name) for name in users}
-    return render_template("index.html", jobs=jobs, names=names, title='Журнал работ')
+    return render_template("index.html", books=books, names=names, title='Список книг')
 
 
 @app.route('/logout')
@@ -66,9 +66,8 @@ def reqister():
             name=form.name.data,
             surname=form.surname.data,
             age=form.age.data,
-            position=form.position.data,
+            sex=form.sex.data,
             email=form.email.data,
-            speciality=form.speciality.data,
             address=form.address.data
         )
         user.set_password(form.password.data)
@@ -78,68 +77,68 @@ def reqister():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-@app.route('/addjob', methods=['GET', 'POST'])
-def addjob():
-    add_form = AddJobForm()
+@app.route('/addbook', methods=['GET', 'POST'])
+def addbook():
+    add_form = AddBookForm()
     if add_form.validate_on_submit():
         db_sess = db_session.create_session()
-        jobs = Jobs(
-            job=add_form.job.data,
-            team_leader=add_form.team_leader.data,
-            work_size=add_form.work_size.data,
-            collaborators=add_form.collaborators.data,
-            is_finished=add_form.is_finished.data
+        books = Books(
+            book=add_form.books.data,
+            author=add_form.author.data,
+            genre=add_form.genre.data,
+            price=add_form.price.data,
+            is_bought=add_form.is_bought.data
         )
-        db_sess.add(jobs)
+        db_sess.add(books)
         db_sess.commit()
         return redirect('/')
-    return render_template('addjob.html', title='Добавить работу', form=add_form)
+    return render_template('addbook.html', title='Добавить книгу', form=add_form)
 
 
-@app.route('/jobs/<int:id>', methods=['GET', 'POST'])
+@app.route('/books/<int:id>', methods=['GET', 'POST'])
 @login_required
-def job_edit(id):
-    form = AddJobForm()
+def book_edit(id):
+    form = AddBookForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
-        jobs = db_sess.query(Jobs).filter(Jobs.id == id,
-                                          (Jobs.team_leader == current_user.id) | (
+        jobs = db_sess.query(Books).filter(Books.id == id,
+                                          (Books.author == current_user.id) | (
                                                   current_user.id == 1)).first()
-        if jobs:
-            form.job.data = jobs.job
-            form.team_leader.data = jobs.team_leader
-            form.work_size.data = jobs.work_size
-            form.collaborators.data = jobs.collaborators
-            form.is_finished.data = jobs.is_finished
+        if books:
+            form.books.data = books.book
+            form.author.data = jobs.author
+            form.genre.data = jobs.genre
+            form.price.data = jobs.price
+            form.is_bought.data = jobs.is_bought
         else:
             abort(404)
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        jobs = db_sess.query(Jobs).filter(Jobs.id == id,
-                                          (Jobs.team_leader == current_user.id) | (
+        books = db_sess.query(Books).filter(Books.id == id,
+                                          (Books.author == current_user.id) | (
                                                   current_user.id == 1)).first()
-        if jobs:
-            jobs.job = form.job.data
-            jobs.team_leader = form.team_leader.data
-            jobs.work_size = form.work_size.data
-            jobs.collaborators = form.collaborators.data
-            jobs.is_finished = form.is_finished.data
+        if books:
+            books.book = form.books.data
+            books.author = form.author.data
+            books.genre = form.genre.data
+            books.price = form.price.data
+            books.is_bought = form.is_bought.data
             db_sess.commit()
             return redirect('/')
         else:
             abort(404)
-    return render_template('addjob.html', title='Редактировать работу', form=form)
+    return render_template('addbook.html', title='Редактировать книгу', form=form)
 
 
-@app.route('/job_delete/<int:id>', methods=['GET', 'POST'])
+@app.route('/book_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def job_delete(id):
     db_sess = db_session.create_session()
-    jobs = db_sess.query(Jobs).filter(Jobs.id == id,
-                                      (Jobs.team_leader == current_user.id) | (
+    jobs = db_sess.query(Books).filter(Books.id == id,
+                                      (Books.author == current_user.id) | (
                                               current_user.id == 1)).first()
 
-    if jobs:
+    if books:
         db_sess.delete(jobs)
         db_sess.commit()
     else:

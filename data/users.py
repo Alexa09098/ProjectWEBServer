@@ -18,7 +18,7 @@ class User(SqlAlchemyBase, UserMixin):
     email = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
-    jobs = orm.relation("Jobs", back_populates='user')
+    books = orm.relation("Books", back_populates='user')
 
     def __repr__(self):
         return f'<User> {self.id} {self.surname} {self.name}'

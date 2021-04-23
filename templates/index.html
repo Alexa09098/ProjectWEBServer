@@ -3,9 +3,9 @@
 {% block content %}
 <meta charset="UTF-8">
 
-<h2 align="center">Журнал работ</h2>
+<h2 align="center">Список книг</h2>
 {% if current_user.is_authenticated %}
-<a href="addjob" class="btn btn-secondary">Добавить работу</a>
+<a href="addjob" class="btn btn-secondary">Добавить книгу</a>
 {% endif %}
 {% for job in jobs %}
 <h3>Работа # {{ job.id }}</h3>
@@ -13,30 +13,30 @@
     <table class="my_table">
         <tr class="my_row">
             <td class="title" width="400px" bgcolor="#dddddd">Название</td>
-            <td class="title" width="150px" bgcolor="#dddddd">Капитан команды</td>
-            <td class="title" width="100px" bgcolor="#dddddd" align="center">Продолжительность</td>
-            <td class="title" width="200px" bgcolor="#dddddd" align="center">Список участников</td>
-            <td class="title" width="100px" bgcolor="#dddddd" align="center">Завершенность</td>
+            <td class="title" width="150px" bgcolor="#dddddd">Автор</td>
+            <td class="title" width="100px" bgcolor="#dddddd" align="center">Жанр</td>
+            <td class="title" width="200px" bgcolor="#dddddd" align="center">Цена</td>
+            <td class="title" width="100px" bgcolor="#dddddd" align="center">Покупка</td>
         </tr>
         <tr class="my_row">
-            <td class="ordinary" bgcolor="#eeeeff">{{ job.job.capitalize() }}</td>
-            <td class="ordinary" bgcolor="#eeeeff">{{ names[job.team_leader][0] }} {{ names[job.team_leader][1] }}</td>
-            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ job.work_size }} часов</td>
-            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ job.collaborators }}</td>
-            {% if job.is_finished %}
-            <td class="ordinary" bgcolor="#eeffee" align="center">Закончено</td>
+            <td class="ordinary" bgcolor="#eeeeff">{{ books.name.capitalize() }}</td>
+            <td class="ordinary" bgcolor="#eeeeff">{{ names[books.author][0] }} {{ names[books.author][1] }}</td>
+            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ books.price }} рублей</td>
+            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ books.bought }}</td>
+            {% if books.is_bought %}
+            <td class="ordinary" bgcolor="#eeffee" align="center">Куплено</td>
             {% else %}
-            <td class="ordinary" bgcolor="#ffeeff" align="center">Не закончено</td>
+            <td class="ordinary" bgcolor="#ffeeff" align="center">Не куплено</td>
             {% endif %}
         </tr>
 
     </table>
 </div>
 <br>
-{% if current_user.is_authenticated and current_user.id == job.team_leader or current_user.id == 1  %}
+{% if current_user.is_authenticated and current_user.id == books.author or current_user.id == 1  %}
 <div>
-    <a href="/jobs/{{ job.id }}" class="btn btn-warning">Редактировать работу</a>
-    <a href="/job_delete/{{ job.id }}" class="btn btn-danger">Удалить работу</a>
+    <a href="/books/{{ books.id }}" class="btn btn-warning">Редактировать книгу</a>
+    <a href="/books_delete/{{ books.id }}" class="btn btn-danger">Удалить книгу</a>
 </div>
 {% endif %}
 {% endfor %}

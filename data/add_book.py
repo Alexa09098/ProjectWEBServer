@@ -3,7 +3,7 @@ from wtforms import SubmitField, StringField, BooleanField, IntegerField
 from wtforms.validators import DataRequired
 
 
-class AddJobForm(FlaskForm):
+class AddBookForm(FlaskForm):
     name = StringField('Название', validators=[DataRequired()])
     genre = StringField('Жанр', validators=[DataRequired()])
     price = StringField('Цена', validators=[DataRequired()])
