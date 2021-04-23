@@ -10,7 +10,7 @@ class Books(SqlAlchemyBase):
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     genre = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    price = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    price = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     end_date = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     bought = sqlalchemy.Column(sqlalchemy.Boolean, default=True)
     author = sqlalchemy.Column(sqlalchemy.String, nullable=True)

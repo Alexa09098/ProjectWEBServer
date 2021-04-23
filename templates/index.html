@@ -8,7 +8,7 @@
 <a href="addbook" class="btn btn-secondary">Добавить книгу</a>
 {% endif %}
 {% for book in books %}
-<h3>Книга # {{ book.id }}</h3>
+<h3>{{ book.name }}</h3>
 <div class="table_container">
     <table class="my_table">
         <tr class="my_row">
@@ -16,17 +16,17 @@
             <td class="title" width="150px" bgcolor="#dddddd">Автор</td>
             <td class="title" width="100px" bgcolor="#dddddd" align="center">Жанр</td>
             <td class="title" width="200px" bgcolor="#dddddd" align="center">Цена</td>
-            <td class="title" width="100px" bgcolor="#dddddd" align="center">Покупка</td>
+            <td class="title" width="100px" bgcolor="#dddddd" align="center">Наличие</td>
         </tr>
         <tr class="my_row">
             <td class="ordinary" bgcolor="#eeeeff">{{ book.name }}</td>
-            <td class="ordinary" bgcolor="#eeeeff">{{ name[book.author] }}</td>
-            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ books.genre }}</td>
-            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ books.price }} рублей</td>
-            {% if books.is_bought %}
-            <td class="ordinary" bgcolor="#eeffee" align="center">Куплено</td>
+            <td class="ordinary" bgcolor="#eeeeff">{{ book.author }}</td>
+            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ book.genre }}</td>
+            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ book.price }} рублей</td>
+            {% if book.bought %}
+            <td class="ordinary" bgcolor="#eeffee" align="center">В наличии</td>
             {% else %}
-            <td class="ordinary" bgcolor="#ffeeff" align="center">Не куплено</td>
+            <td class="ordinary" bgcolor="#ffeeff" align="center">Нет в наличии</td>
             {% endif %}
         </tr>
 

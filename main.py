@@ -88,7 +88,7 @@ def addbook():
             genre=add_form.genre.data,
             price=add_form.price.data,
             end_date=add_form.end_date.data,
-            is_bought=add_form.is_bought.data
+            bought=add_form.bought.data
         )
         db_sess.add(books)
         db_sess.commit()
@@ -110,7 +110,7 @@ def book_edit(id):
             form.author.data = books.author
             form.genre.data = books.genre
             form.price.data = books.price
-            form.is_bought.data = books.is_bought
+            form.bought.data = books.bought
         else:
             abort(404)
     if form.validate_on_submit():
@@ -123,7 +123,7 @@ def book_edit(id):
             books.author = form.author.data
             books.genre = form.genre.data
             books.price = form.price.data
-            books.is_bought = form.is_bought.data
+            books.bought = form.bought.data
             db_sess.commit()
             return redirect('/')
         else:

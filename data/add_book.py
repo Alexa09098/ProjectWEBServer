@@ -6,9 +6,9 @@ from wtforms.validators import DataRequired
 class AddBookForm(FlaskForm):
     name = StringField('Название', validators=[DataRequired()])
     genre = StringField('Жанр', validators=[DataRequired()])
-    price = StringField('Цена', validators=[DataRequired()])
-    end_date = StringField('Дата написания', validators=[DataRequired()])
-    is_bought = BooleanField('Книга куплена?')
-    author = IntegerField('Автор', validators=[DataRequired()])
+    price = IntegerField('Цена', validators=[DataRequired()])
+    end_date = IntegerField('Дата написания', validators=[DataRequired()])
+    bought = BooleanField('Книга есть в наличии?')
+    author = StringField('Автор', validators=[DataRequired()])
 
     submit = SubmitField('Отправить')
