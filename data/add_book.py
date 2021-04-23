@@ -8,7 +8,7 @@ class AddBookForm(FlaskForm):
     genre = StringField('Жанр', validators=[DataRequired()])
     price = StringField('Цена', validators=[DataRequired()])
     end_date = StringField('Дата написания', validators=[DataRequired()])
-    bought = BooleanField('Работа окончена?')
+    is_bought = BooleanField('Книга куплена?')
     author = IntegerField('Автор', validators=[DataRequired()])
 
     submit = SubmitField('Отправить')

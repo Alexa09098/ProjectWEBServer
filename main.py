@@ -40,8 +40,8 @@ def index():
     db_sess = db_session.create_session()
     books = db_sess.query(Books).all()
     users = db_sess.query(User).all()
-    names = {name.id: (name.surname, name.name) for name in users}
-    return render_template("index.html", books=books, names=names, title='Список книг')
+    name = {name.id: (name.surname, name.name) for name in users}
+    return render_template("index.html", books=books, name=name, title='Список книг')
 
 
 @app.route('/logout')
@@ -83,10 +83,11 @@ def addbook():
     if add_form.validate_on_submit():
         db_sess = db_session.create_session()
         books = Books(
-            book=add_form.books.data,
+            name=add_form.name.data,
             author=add_form.author.data,
             genre=add_form.genre.data,
             price=add_form.price.data,
+            end_date=add_form.end_date.data,
             is_bought=add_form.is_bought.data
         )
         db_sess.add(books)
@@ -97,19 +98,19 @@ def addbook():
 
 @app.route('/books/<int:id>', methods=['GET', 'POST'])
 @login_required
-def book_edit(id, books=None):
+def book_edit(id):
     form = AddBookForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
-        jobs = db_sess.query(Books).filter(Books.id == id,
+        books = db_sess.query(Books).filter(Books.id == id,
                                            (Books.author == current_user.id) | (
                                                    current_user.id == 1)).first()
         if books:
             form.books.data = books.book
-            form.author.data = jobs.author
-            form.genre.data = jobs.genre
-            form.price.data = jobs.price
-            form.is_bought.data = jobs.is_bought
+            form.author.data = books.author
+            form.genre.data = books.genre
+            form.price.data = books.price
+            form.is_bought.data = books.is_bought
         else:
             abort(404)
     if form.validate_on_submit():
