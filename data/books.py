@@ -16,5 +16,8 @@ class Books(SqlAlchemyBase):
     bought = sqlalchemy.Column(sqlalchemy.Boolean, default=True)
     author = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
+    authors = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
+    user = orm.relation('User')
+
     def __repr__(self):
         return f'<Book> {self.book}'

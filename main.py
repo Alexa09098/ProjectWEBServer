@@ -97,13 +97,13 @@ def addbook():
 
 @app.route('/books/<int:id>', methods=['GET', 'POST'])
 @login_required
-def book_edit(id):
+def book_edit(id, books=None):
     form = AddBookForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
         jobs = db_sess.query(Books).filter(Books.id == id,
-                                          (Books.author == current_user.id) | (
-                                                  current_user.id == 1)).first()
+                                           (Books.author == current_user.id) | (
+                                                   current_user.id == 1)).first()
         if books:
             form.books.data = books.book
             form.author.data = jobs.author
@@ -115,8 +115,8 @@ def book_edit(id):
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         books = db_sess.query(Books).filter(Books.id == id,
-                                          (Books.author == current_user.id) | (
-                                                  current_user.id == 1)).first()
+                                            (Books.author == current_user.id) | (
+                                                    current_user.id == 1)).first()
         if books:
             books.book = form.books.data
             books.author = form.author.data
@@ -135,8 +135,8 @@ def book_edit(id):
 def job_delete(id):
     db_sess = db_session.create_session()
     jobs = db_sess.query(Books).filter(Books.id == id,
-                                      (Books.author == current_user.id) | (
-                                              current_user.id == 1)).first()
+                                       (Books.author == current_user.id) | (
+                                               current_user.id == 1)).first()
 
     if books:
         db_sess.delete(jobs)
